@@ -16,6 +16,12 @@ export const Person = ({ personProfile }) => {
       <td><img src={picture.medium} alt={name.first} /></td>
       <td>{email}</td>
       <td>{getDateFromISO(dob.date)}</td>
+      <td>
+        <button
+          type="button"
+          onClick={() => console.log('more')}>More Info
+        </button>
+      </td>
     </tr>
   );
 };
