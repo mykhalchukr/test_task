@@ -1,5 +1,6 @@
 import React from 'react';
 import moment from 'moment';
+import { NavLink } from 'react-router-dom';
 
 export const Person = ({ personProfile }) => {
   const { name, email, dob, picture } = personProfile;
@@ -17,10 +18,11 @@ export const Person = ({ personProfile }) => {
       <td>{email}</td>
       <td>{getDateFromISO(dob.date)}</td>
       <td>
-        <button
-          type="button"
-          onClick={() => console.log('more')}>More Info
-        </button>
+        <NavLink
+          to={`profile/${personProfile.login.uuid}`}
+          onClick={() => console.log('more')}>
+          More Info
+          </NavLink>
       </td>
     </tr>
   );

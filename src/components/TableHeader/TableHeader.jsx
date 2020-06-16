@@ -7,7 +7,7 @@ export const TableHeader = () => {
   return (
     <thead>
       <tr>
-        {tableCaptions.map(cellName => <th>{cellName}</th>)}
+        {tableCaptions.map(cellName => <th key={`${cellName} ${new Date()}`}>{cellName}</th>)}
       </tr>
     </thead>
   );

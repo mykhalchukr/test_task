@@ -1,27 +1,46 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect } from 'react';
+import { Switch, Route, useLocation, NavLink } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 import './App.css';
 import { SignIn } from './components/SignIn/SignIn';
 import { PeopleList } from './components/PeopleList/PeopleList';
+import { PersonProfile } from './components/PersonProfile/PersonProfile';
+import { SearchError } from './components/SearchError/SearchError';
 
 function App() {
-	useEffect(() => localStorage.clear(), []);
 
-  const [isLoggedIn, setLoginStatus] = useState(false);
+  const peopleList = useSelector(state => state.peopleData);
+  const location = useLocation();
 
-  
-  const handleLoginStatus = () => {
-    setLoginStatus(true);
-    localStorage.setItem('isLoggedIn', true);
-  };
+  useEffect(() => {
+    if (location.pathname === '/') {
+      localStorage.clear();
+    }
+  }, [location]);
 
   return (
     <div className="App">
-        <header>Header</header>
-        <main>
-          <SignIn handleLoginStatus={handleLoginStatus}/>
-          {isLoggedIn && <PeopleList/>}
-        </main>
-        <footer>Footer</footer>
+      <header>
+        <NavLink to="/">
+          <button type='button'>Go Back</button>
+        </NavLink>
+      </header>
+      <main>
+        <Switch>
+          <Route path='/' component={SignIn} exact />
+          <Route path='/people' component={PeopleList} />
+          <Route
+            path='/profile/:id'
+            render={(routeProps) => {
+              const currentPerson = peopleList
+                .find(person => person.login.uuid === routeProps.match.params.id);
+              return currentPerson ?
+                <PersonProfile personData={currentPerson} /> :
+                <SearchError />
+            }}
+          />
+        </Switch>
+      </main>
     </div>
   );
 }

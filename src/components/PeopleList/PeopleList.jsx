@@ -3,17 +3,21 @@ import { getDataFromServer } from '../../helpers/api';
 import { useDispatch, useSelector } from 'react-redux';
 import { TableHeader } from '../TableHeader/TableHeader';
 import { TableBody } from '../TableBody/TableBody';
+import { handleDataLoading } from '../../store/peopleData';
+import { handleSearchQuery } from '../../store/filterData';
+import { setSortType } from '../../store/sortType';
 
 export const PeopleList = () => {
+
   const dispatch = useDispatch();
   const inputedData = useSelector(state => state.filterData);
   const sortType = useSelector(state => state.sortBy);
-  
+
   useEffect(() => {
     const getPeopleList = async () => {
       const { data } = await getDataFromServer();
 
-      dispatch({ type: 'LOAD_DATA_FROM_SERVER', list: data.results })
+      dispatch(handleDataLoading(data.results));
     };
     getPeopleList();
   }, [dispatch]);
@@ -23,17 +27,20 @@ export const PeopleList = () => {
       <input
         type="text"
         name="Filter by Surname"
-        id=""
+        id="filter"
         value={inputedData}
         onChange={(event) => {
           const { value } = event.target;
-          dispatch({ type: 'FILTER_BY_SURNAME', surname: value });
+          dispatch(handleSearchQuery(value));
         }}
       />
-      <select onChange={(e)=> {
-        const {value} = e.target;
-        dispatch({type: 'SET_SORT_TYPE', sortType: value});
-      }} defaultValue={sortType}>
+      <select
+        defaultValue={sortType}
+        onChange={(e) => {
+          const { value } = e.target;
+          dispatch(setSortType(value));
+        }}
+      >
         <option value="">Sort By</option>
         <option value="surname">Surname</option>
         <option value="age">Age</option>
