@@ -1,12 +1,14 @@
 import React from 'react';
 import { Person } from '../Person/Person';
 import { useSelector } from 'react-redux';
+import { useDebounce } from '../../helpers/use-debounce';
 
 export const TableBody = () => {
 
   const peopleList = useSelector(state => state.peopleData);
   const searchQuery = useSelector(state => state.filterData);
   const sortType = useSelector(state => state.sortBy);
+  const debouncedValue = useDebounce(searchQuery, 1000);
 
   const getSortedByParam = () => {
     switch (sortType) {
@@ -23,7 +25,7 @@ export const TableBody = () => {
     }
   };
   const getFilteredBySurname = () => {
-    const normalizedQuery = searchQuery.toLowerCase();
+    const normalizedQuery = debouncedValue.toLowerCase();
     return peopleList
       .filter(person => {
         return person.name.last
@@ -31,10 +33,11 @@ export const TableBody = () => {
           .includes(normalizedQuery);
       });
   };
-  const sortedList = getFilteredBySurname().sort(getSortedByParam());
+  const sortedList = getFilteredBySurname()
+    .sort(getSortedByParam());
 
   return (
-    <tbody>
+    <tbody className="table__body">
       {sortedList.map(person => <Person
         personProfile={person}
         key={person.login.uuid}

@@ -5,9 +5,14 @@ export const TableHeader = () => {
   const tableCaptions = ['Full Name', 'Photo', 'Email', 'dob'];
 
   return (
-    <thead>
-      <tr>
-        {tableCaptions.map(cellName => <th key={`${cellName} ${new Date()}`}>{cellName}</th>)}
+    <thead className="table__header">
+      <tr className="table__header-row">
+        {tableCaptions.map(cellName => <th
+          key={`${cellName} ${new Date()}`}
+          className="table__header-cell">
+          {cellName}
+        </th>)}
+        <th className="table__header-cell">Details</th>
       </tr>
     </thead>
   );

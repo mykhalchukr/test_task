@@ -12,9 +12,13 @@ export const SignIn = () => {
 
 	return (
 		<form>
-			<input type="button" value="sign in" onClick={() => {
-				handleLoginStatus();
-			}} />
+			<input
+				type="button"
+				className="button button--sign-in"
+				value="sign in"
+				onClick={() => {
+					handleLoginStatus();
+				}} />
 		</form>
 	);
 };

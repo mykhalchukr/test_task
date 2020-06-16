@@ -1,11 +1,11 @@
 import { SET_SORT_TYPE } from './actionTypes';
 
-export const setSortType = (sortType) => ({action: SET_SORT_TYPE, sortType});
+export const setSortType = (typeOfSort) => ({type: SET_SORT_TYPE, typeOfSort});
 
 const reducer = (sortBy = '', action) => {
   switch (action.type) {
     case SET_SORT_TYPE:
-      return action.sortType;
+      return action.typeOfSort;
     default:
       return sortBy;
   }
